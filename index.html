@@ -10,1011 +10,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Inter:wght@300;400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Inter:wght@300;400;500;600&family=Montserrat:wght@700;800&display=swap"
         rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- Lucide Icons for Minimalistic iconography -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <style>
-        /* --- CSS VARIABLES & THEME CONFIGURATION --- */
-        :root {
-            --bg-primary: #FAF9F6;
-            /* Warm Off-White */
-            --bg-secondary: #F4F1EA;
-            /* Light Sand / Beige */
-            --text-main: #111111;
-            /* Deep Editorial Black */
-            --text-muted: #666666;
-            /* Soft Luxury Gray */
-            --border-color: #E6E2D8;
-            /* Natural Tone Border */
-            --font-serif: 'Cormorant Garamond', serif;
-            --font-sans: 'Inter', sans-serif;
-            --transition-smooth: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            --transition-micro: all 0.2s ease;
-        }
-
-        /* --- BASE RESET & GLOBAL STYLES --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            background-color: var(--bg-primary);
-            color: var(--text-main);
-            font-family: var(--font-sans);
-            font-size: 16px;
-        }
-
-        body {
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-
-        a {
-            color: inherit;
-            text-decoration: none;
-            transition: var(--transition-micro);
-        }
-
-        button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-family: inherit;
-        }
-
-        img,
-        video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            transition: var(--transition-smooth);
-        }
-
-        /* --- SCROLL PROGRESS BAR --- */
-        #scroll-progress {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 3px;
-            background: var(--text-main);
-            z-index: 1001;
-            width: 0%;
-            transition: width 0.1s linear;
-        }
-
-        /* --- LOADING ANIMATION --- */
-        .loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-primary);
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 0.8s ease, visibility 0.8s;
-        }
-
-        .loader.fade-out {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .loader-title {
-            font-family: var(--font-serif);
-            font-size: 2.5rem;
-            font-weight: 300;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            animation: pulse 2s infinite ease-in-out;
-        }
-
-        @keyframes pulse {
-
-            0%,
-            100% {
-                opacity: 0.3;
-            }
-
-            50% {
-                opacity: 1;
-            }
-        }
-
-        /* --- REVEAL ON SCROLL FRAMEWORK --- */
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* --- UTILITY CLASSES --- */
-        .section-padding {
-            padding: 8rem 10% 8rem 10%;
-        }
-
-        @media(max-width: 768px) {
-            .section-padding {
-                padding: 5rem 6% 5rem 6%;
-            }
-        }
-
-        .editorial-title {
-            font-family: var(--font-serif);
-            font-size: 3.5rem;
-            font-weight: 300;
-            line-height: 1.2;
-            margin-bottom: 2rem;
-        }
-
-        @media(max-width: 768px) {
-            .editorial-title {
-                font-size: 2.5rem;
-            }
-        }
-
-        /* --- PREMIUM NAVIGATION --- */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 2rem 10%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            transition: var(--transition-smooth);
-        }
-
-        .navbar.scrolled {
-            padding: 1.2rem 10%;
-            background: rgba(250, 249, 246, 0.85);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        @media(max-width: 768px) {
-
-            .navbar,
-            .navbar.scrolled {
-                padding: 1.5rem 6%;
-            }
-        }
-
-        .nav-logo {
-            font-family: var(--font-serif);
-            font-size: 1.8rem;
-            font-weight: 800;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 3rem;
-        }
-
-        .nav-links a {
-            font-size: 0.85rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            font-weight: 500;
-            position: relative;
-            padding: 0.5rem 0;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: var(--text-main);
-            transition: var(--transition-micro);
-        }
-
-        .nav-links a:hover::after,
-        .nav-links a.active::after {
-            width: 100%;
-        }
-
-        @media(max-width: 1024px) {
-            .nav-links {
-                display: none;
-            }
-        }
-
-        /* Mobile Menu Triggers */
-        .menu-btn {
-            display: none;
-            flex-direction: column;
-            gap: 6px;
-            z-index: 1002;
-        }
-
-        .menu-btn span {
-            width: 24px;
-            height: 1px;
-            background: var(--text-main);
-            transition: var(--transition-micro);
-        }
-
-        @media(max-width: 1024px) {
-            .menu-btn {
-                display: flex;
-            }
-        }
-
-        .menu-btn.open span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-
-        .menu-btn.open span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .menu-btn.open span:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -5px);
-        }
-
-        .mobile-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background: var(--bg-primary);
-            z-index: 999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 2.5rem;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition-smooth);
-        }
-
-        .mobile-overlay.open {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .mobile-overlay a {
-            font-family: var(--font-serif);
-            font-size: 2.5rem;
-            font-weight: 300;
-        }
-
-        /* --- HERO SECTION --- */
-        .hero {
-            height: 100vh;
-            width: 100%;
-            position: relative;
-            display: flex;
-            align-items: center;
-            padding: 0 10%;
-            overflow: hidden;
-        }
-
-        @media(max-width: 768px) {
-            .hero {
-                padding: 0 6%;
-            }
-        }
-
-        .hero-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            transform: scale(1.05);
-        }
-
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.3) 100%);
-            z-index: -1;
-        }
-
-        .hero-content {
-            max-width: 55rem;
-            color: #FFFFFF;
-        }
-
-        .hero-title {
-            font-family: var(--font-serif);
-            font-size: 5.5rem;
-            font-weight: 500;
-            line-height: 1.1;
-            margin-bottom: 2rem;
-            animation: fadeInUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        @media(max-width: 768px) {
-            .hero-title {
-                font-size: 3.2rem;
-            }
-        }
-
-        .hero-sub {
-            font-size: 1.1rem;
-            font-weight: 300;
-            letter-spacing: 0.03em;
-            line-height: 1.8;
-            margin-bottom: 3.5rem;
-            max-width: 32rem;
-            opacity: 0.9;
-            animation: fadeInUp 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 1.5rem;
-            animation: fadeInUp 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        @media(max-width: 480px) {
-            .btn-group {
-                flex-direction: column;
-                gap: 1rem;
-            }
-        }
-
-        .btn {
-            padding: 1.2rem 2.5rem;
-            font-size: 0.85rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            font-weight: 500;
-            border-radius: 0;
-            transition: var(--transition-smooth);
-            display: inline-block;
-            text-align: center;
-        }
-
-        .btn-primary {
-            background: #FFFFFF;
-            color: var(--text-main);
-        }
-
-        .btn-primary:hover {
-            background: var(--text-main);
-            color: #FFFFFF;
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary {
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            color: #FFFFFF;
-            backdrop-filter: blur(10px);
-        }
-
-        .btn-secondary:hover {
-            border-color: #FFFFFF;
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* --- ABOUT SECTION --- */
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 6rem;
-            align-items: center;
-        }
-
-        @media(max-width: 1024px) {
-            .about-grid {
-                grid-template-columns: 1fr;
-                gap: 4rem;
-            }
-        }
-
-        .about-text p {
-            font-size: 1.15rem;
-            color: var(--text-muted);
-            line-height: 1.8;
-            margin-bottom: 2rem;
-            font-weight: 300;
-        }
-
-        .about-text p strong {
-            color: var(--text-main);
-            font-weight: 500;
-        }
-
-        .about-img-wrapper {
-            height: 35rem;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .about-img-wrapper:hover img {
-            transform: scale(1.03);
-        }
-
-        /* --- STUDIOS SECTION --- */
-        .studios {
-            background-color: var(--bg-secondary);
-        }
-
-        .studio-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2.5rem;
-            margin-top: 4rem;
-        }
-
-        @media(max-width: 1024px) {
-            .studio-grid {
-                grid-template-columns: 1fr;
-                gap: 4rem;
-            }
-        }
-
-        .studio-card {
-            background: var(--bg-primary);
-            border: 1px solid var(--border-color);
-            transition: var(--transition-smooth);
-        }
-
-        .studio-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.03);
-        }
-
-        .studio-img {
-            height: 26rem;
-            overflow: hidden;
-        }
-
-        .studio-card:hover .studio-img img {
-            transform: scale(1.05);
-        }
-
-        .studio-info {
-            padding: 2.5rem;
-        }
-
-        .studio-name {
-            font-family: var(--font-serif);
-            font-size: 2rem;
-            font-weight: 400;
-            margin-bottom: 1rem;
-        }
-
-        .studio-desc {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-            font-weight: 300;
-        }
-
-        .studio-amenities {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            border-top: 1px solid var(--border-color);
-            padding-top: 1.5rem;
-        }
-
-        .amenity {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        .amenity i {
-            width: 16px;
-            color: var(--text-main);
-        }
-
-        /* --- LIFESTYLE SECTION --- */
-        .lifestyle-grid {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 1.5rem;
-            margin-top: 4rem;
-        }
-
-        @media(max-width: 1024px) {
-            .lifestyle-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        @media(max-width: 640px) {
-            .lifestyle-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        .lifestyle-item {
-            position: relative;
-            height: 22rem;
-            overflow: hidden;
-        }
-
-        .lifestyle-item img {
-            filter: grayscale(15%);
-        }
-
-        .lifestyle-item:hover img {
-            transform: scale(1.06);
-            filter: grayscale(0%);
-        }
-
-        .lifestyle-label {
-            position: absolute;
-            bottom: 1.5rem;
-            left: 1.5rem;
-            color: #FFFFFF;
-            font-size: 0.9rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            font-weight: 500;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        /* --- GALLERY SECTION --- */
-        .gallery {
-            background: var(--bg-secondary);
-        }
-
-        .gallery-masonry {
-            columns: 4 22rem;
-            column-gap: 1.5rem;
-            margin-top: 4rem;
-        }
-
-        .gallery-thumb {
-            break-inside: avoid;
-            margin-bottom: 1.5rem;
-            overflow: hidden;
-            background: var(--bg-primary);
-            cursor: pointer;
-        }
-
-        .gallery-thumb:hover img {
-            transform: scale(1.04);
-        }
-
-        /* --- WHY STAY HERE --- */
-        .why-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 3rem;
-            margin-top: 4rem;
-        }
-
-        @media(max-width: 1024px) {
-            .why-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media(max-width: 640px) {
-            .why-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .why-card {
-            padding: 2.5rem;
-            border-bottom: 1px solid var(--border-color);
-            transition: var(--transition-smooth);
-        }
-
-        .why-card:hover {
-            border-bottom-color: var(--text-main);
-        }
-
-        .why-icon {
-            margin-bottom: 1.5rem;
-        }
-
-        .why-card h3 {
-            font-family: var(--font-serif);
-            font-size: 1.6rem;
-            font-weight: 400;
-            margin-bottom: 0.75rem;
-        }
-
-        .why-card p {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            font-weight: 300;
-        }
-
-        /* --- LOCATION SECTION --- */
-        .location {
-            background: var(--bg-secondary);
-        }
-
-        .location-grid {
-            display: grid;
-            grid-template-columns: 0.9fr 1.1fr;
-            gap: 6rem;
-            align-items: center;
-        }
-
-        @media(max-width: 1024px) {
-            .location-grid {
-                grid-template-columns: 1fr;
-                gap: 4rem;
-            }
-        }
-
-        .location-details h3 {
-            font-family: var(--font-serif);
-            font-size: 1.8rem;
-            font-weight: 400;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 0.5rem;
-        }
-
-        .location-details ul {
-            list-style: none;
-        }
-
-        .location-details li {
-            font-size: 1rem;
-            color: var(--text-muted);
-            margin-bottom: 0.5rem;
-            font-weight: 300;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .location-details li::before {
-            content: '—';
-            color: var(--text-main);
-        }
-
-        .map-placeholder {
-            height: 32rem;
-            background: #EAE7DF;
-            border: 1px solid var(--border-color);
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
-
-        .map-bg {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            opacity: 0.4;
-            filter: grayscale(100%);
-        }
-
-        .map-box {
-            position: relative;
-            background: #FFFFFF;
-            padding: 2rem;
-            max-width: 22rem;
-            text-align: center;
-            box-shadow: 0 20px 4px rgba(0, 0, 0, 0.01);
-            z-index: 2;
-        }
-
-        .map-box h4 {
-            font-family: var(--font-serif);
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .map-box p {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        /* --- TESTIMONIALS --- */
-        .testimonial-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2.5rem;
-            margin-top: 4rem;
-        }
-
-        @media(max-width: 1024px) {
-            .testimonial-grid {
-                grid-template-columns: 1fr;
-                gap: 3rem;
-            }
-        }
-
-        .testimonial-card {
-            padding: 3rem 2rem;
-            position: relative;
-        }
-
-        .testimonial-quote {
-            font-family: var(--font-serif);
-            font-size: 1.6rem;
-            font-style: italic;
-            line-height: 1.5;
-            margin-bottom: 2rem;
-            font-weight: 300;
-        }
-
-        .testimonial-author {
-            font-size: 0.85rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            font-weight: 600;
-            color: var(--text-main);
-        }
-
-        .testimonial-stars {
-            display: flex;
-            gap: 0.25rem;
-            margin-bottom: 1rem;
-            color: #C5A880;
-        }
-
-        /* --- CTA SECTION --- */
-        .cta {
-            background: var(--bg-secondary);
-            text-align: center;
-            padding: 10rem 10%;
-        }
-
-        .cta-title {
-            font-family: var(--font-serif);
-            font-size: 5rem;
-            font-weight: 300;
-            line-height: 1.1;
-            margin-bottom: 3.5rem;
-        }
-
-        @media(max-width: 768px) {
-            .cta-title {
-                font-size: 3rem;
-            }
-        }
-
-        .btn-dark {
-            background: var(--text-main);
-            color: #FFFFFF;
-            border: 1px solid var(--text-main);
-        }
-
-        .btn-dark:hover {
-            background: transparent;
-            color: var(--text-main);
-            transform: translateY(-2px);
-        }
-
-        /* --- FOOTER --- */
-        footer {
-            background: var(--bg-primary);
-            padding: 5rem 10% 3rem 10%;
-            border-top: 1px solid var(--border-color);
-        }
-
-        @media(max-width: 768px) {
-            footer {
-                padding: 4rem 6% 2rem 6%;
-            }
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 4rem;
-            margin-bottom: 5rem;
-        }
-
-        @media(max-width: 1024px) {
-            .footer-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 3rem;
-            }
-        }
-
-        @media(max-width: 640px) {
-            .footer-grid {
-                grid-template-columns: 1fr;
-                gap: 2.5rem;
-            }
-        }
-
-        .footer-col h4 {
-            font-size: 0.85rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            margin-bottom: 1.5rem;
-            font-weight: 600;
-        }
-
-        .footer-col p,
-        .footer-col a {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            margin-bottom: 0.75rem;
-            display: block;
-            font-weight: 300;
-        }
-
-        .footer-col a:hover {
-            color: var(--text-main);
-        }
-
-        .footer-bottom {
-            border-top: 1px solid var(--border-color);
-            padding-top: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        @media(max-width: 768px) {
-            .footer-bottom {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-            }
-        }
-
-        .concept-note {
-            font-style: italic;
-            color: #A09886;
-            font-weight: 400;
-        }
-
-        /* --- BACK TO TOP --- */
-        .back-to-top {
-            position: fixed;
-            bottom: 2.5rem;
-            right: 2.5rem;
-            background: #FFFFFF;
-            border: 1px solid var(--border-color);
-            width: 45px;
-            height: 45px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 99;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition-smooth);
-        }
-
-        .back-to-top.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .back-to-top:hover {
-            background: var(--text-main);
-            color: #FFFFFF;
-            border-color: var(--text-main);
-        }
-
-        /* --- HERO AND FOOTER MEDIA --- */
-        .hero-slide {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0;
-            animation: heroFade 16s infinite ease-in-out;
-        }
-
-        .slide-1 {
-            animation-delay: 0s;
-        }
-
-        .slide-2 {
-            animation-delay: 8s;
-        }
-
-        @keyframes heroFade {
-            0% {
-                opacity: 1;
-            }
-
-            45% {
-                opacity: 1;
-            }
-
-            55% {
-                opacity: 0;
-            }
-
-            95% {
-                opacity: 0;
-            }
-
-            100% {
-                opacity: 1;
-            }
-        }
-
-        .footer-video-wrap {
-            position: relative;
-            width: 100%;
-            height: 45vh;
-            margin-bottom: 4rem;
-            overflow: hidden;
-            border-radius: 4px;
-        }
-
-        .footer-video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .footer-video-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .footer-video-overlay h3 {
-            color: #fff;
-            font-family: var(--font-serif);
-            font-size: 3rem;
-            font-weight: 300;
-            letter-spacing: 0.1em;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
@@ -1038,6 +43,9 @@
             <a href="#gallery">Gallery</a>
             <a href="#location">Location</a>
         </div>
+        <div class="nav-actions">
+            <button type="button" class="btn-nav-auth" id="auth-btn">Login</button>
+        </div>
         <button class="menu-btn" id="menu-btn" aria-label="Toggle Menu">
             <span></span>
             <span></span>
@@ -1053,22 +61,30 @@
         <a href="#lifestyle" class="mobile-link">Lifestyle</a>
         <a href="#gallery" class="mobile-link">Gallery</a>
         <a href="#location" class="mobile-link">Location</a>
+        <button type="button" class="mobile-auth-btn" id="mobile-auth-btn">Login</button>
     </div>
 
     <!-- 1. Hero Section -->
     <section class="hero" id="home">
         <div class="hero-bg" id="hero-bg">
-            <img src="bg1.jpg" alt="ELU Studio Luxury Sea View Exterior Architecture" class="hero-slide slide-1">
-            <img src="bg2.jpg" alt="ELU Studio Luxury Sea View Exterior Architecture" class="hero-slide slide-2">
+            <video class="hero-video" autoplay muted loop playsinline>
+                <source src="bg.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
         </div>
         <div class="hero-overlay"></div>
         <div class="hero-content">
-            <h1 class="hero-title">Stay by the Sea<br>Live Slowly.</h1>
+            <h1 class="hero-title">Stay Longer<br> Live Better</h1>
             <p class="hero-sub">Based in Ahangama, Sri Lanka. Made for slow living, longer stays, and light-filled days.
             </p>
+            <div class="hero-social">
+                <a href="#" class="social-link" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                <a href="#" class="social-link" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#" class="social-link" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            </div>
             <div class="btn-group">
                 <a href="#about" class="btn btn-primary">Explore</a>
-                <a href="#cta" class="btn btn-secondary">Book Your Stay</a>
+                <button type="button" class="btn btn-secondary booking-open">Book Your Stay</button>
             </div>
         </div>
     </section>
@@ -1094,68 +110,79 @@
     <!-- 3. Studios Section -->
     <section class="section-padding studios" id="studios">
         <div class="reveal">
-            <h2 class="editorial-title" style="text-align: center;">Our Sanctuary Spaces</h2>
+            <h2 class="editorial-title" style="text-align: center;">Our Stay Packages</h2>
             <p
                 style="text-align: center; color: var(--text-muted); max-width: 32rem; margin: -1rem auto 3rem auto; font-weight: 300;">
-                Three uniquely structured layouts offering refined luxury, bespoke natural wood finishings, and deep
-                coastal quiet.</p>
+                Three curated stay packages â€” each with its own character, amenities, and nightly rate.</p>
         </div>
 
         <div class="studio-grid">
-            <!-- Studio One -->
+            <!-- Package 1 -->
             <div class="studio-card reveal">
                 <div class="studio-img">
                     <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1000"
-                        alt="Studio One Premium Ocean View Interior Layout">
+                        alt="Package 1 Essential coastal studio interior">
                 </div>
                 <div class="studio-info">
-                    <h3 class="studio-name">Studio One</h3>
-                    <p class="studio-desc">Elevated ocean views featuring clean floor-to-ceiling panoramic glass panels
-                        and custom teak appointments.</p>
+                    <span class="studio-badge">Essential</span>
+                    <h3 class="studio-name">Package 1</h3>
+                    <p class="studio-price">From <strong>$85</strong> <span>/ night</span></p>
+                    <p class="studio-desc">A refined coastal retreat with ocean glimpses, clean lines, and everything
+                        you need for a focused slow stay.</p>
                     <div class="studio-amenities">
                         <div class="amenity"><i data-lucide="bed"></i> Queen Bed</div>
-                        <div class="amenity"><i data-lucide="chef-hat"></i> Fitted Kitchen</div>
-                        <div class="amenity"><i data-lucide="laptop"></i> Workspace</div>
+                        <div class="amenity"><i data-lucide="chef-hat"></i> Compact Kitchen</div>
+                        <div class="amenity"><i data-lucide="laptop"></i> Desk Nook</div>
                         <div class="amenity"><i data-lucide="wifi"></i> High-Speed WiFi</div>
                     </div>
+                    <button type="button" class="btn btn-booking booking-open" data-package="Package 1">Book Package
+                        1</button>
                 </div>
             </div>
 
-            <!-- Studio Two -->
+            <!-- Package 2 -->
             <div class="studio-card reveal">
                 <div class="studio-img">
                     <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&w=1000"
-                        alt="Studio Two Airy Architectural Minimalist Living Unit">
+                        alt="Package 2 Comfort studio with ocean view">
                 </div>
                 <div class="studio-info">
-                    <h3 class="studio-name">Studio Two</h3>
-                    <p class="studio-desc">A spacious, light-drenched layout emphasizing expansive cross-ventilation
-                        breezes and a minimalist concrete aesthetic.</p>
+                    <span class="studio-badge">Comfort</span>
+                    <h3 class="studio-name">Package 2</h3>
+                    <p class="studio-price">From <strong>$110</strong> <span>/ night</span></p>
+                    <p class="studio-desc">Spacious and light-filled with cross-ventilation breezes, a full kitchen, and
+                        a private balcony facing the sea.</p>
                     <div class="studio-amenities">
-                        <div class="amenity"><i data-lucide="bed"></i> Queen Bed</div>
-                        <div class="amenity"><i data-lucide="chef-hat"></i> Fitted Kitchen</div>
-                        <div class="amenity"><i data-lucide="laptop"></i> Workspace</div>
-                        <div class="amenity"><i data-lucide="wifi"></i> High-Speed WiFi</div>
+                        <div class="amenity"><i data-lucide="bed"></i> Queen Bed + Sofa</div>
+                        <div class="amenity"><i data-lucide="chef-hat"></i> Full Kitchen</div>
+                        <div class="amenity"><i data-lucide="laptop"></i> Dedicated Workspace</div>
+                        <div class="amenity"><i data-lucide="sunrise"></i> Ocean View Balcony</div>
                     </div>
+                    <button type="button" class="btn btn-booking booking-open" data-package="Package 2">Book Package
+                        2</button>
                 </div>
             </div>
 
-            <!-- Garden Studio -->
+            <!-- Package 3 -->
             <div class="studio-card reveal">
                 <div class="studio-img">
                     <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=1000"
-                        alt="Garden Studio with private courtyard access">
+                        alt="Package 3 Deluxe garden studio with outdoor shower">
                 </div>
                 <div class="studio-info">
-                    <h3 class="studio-name">Garden Studio</h3>
-                    <p class="studio-desc">Nestled within our lower biological stone courtyard, offering private access
-                        to outdoor open-air bathing spaces.</p>
+                    <span class="studio-badge">Deluxe</span>
+                    <h3 class="studio-name">Package 3</h3>
+                    <p class="studio-price">From <strong>$145</strong> <span>/ night</span></p>
+                    <p class="studio-desc">Our premium sanctuary — private garden access, outdoor shower, king bed, and
+                        executive-grade amenities for extended stays.</p>
                     <div class="studio-amenities">
-                        <div class="amenity"><i data-lucide="bed"></i> Queen Bed</div>
-                        <div class="amenity"><i data-lucide="chef-hat"></i> Fitted Kitchen</div>
-                        <div class="amenity"><i data-lucide="laptop"></i> Workspace</div>
-                        <div class="amenity"><i data-lucide="wifi"></i> High-Speed WiFi</div>
+                        <div class="amenity"><i data-lucide="bed-double"></i> King Bed</div>
+                        <div class="amenity"><i data-lucide="sparkles"></i> Premium Kitchen</div>
+                        <div class="amenity"><i data-lucide="trees"></i> Private Garden</div>
+                        <div class="amenity"><i data-lucide="shower-head"></i> Outdoor Shower</div>
                     </div>
+                    <button type="button" class="btn btn-booking booking-open" data-package="Package 3">Book Package
+                        3</button>
                 </div>
             </div>
         </div>
@@ -1356,7 +383,7 @@
                 <p class="testimonial-quote">"ELU became my complete remote engineering base for two full months. The
                     internet infrastructure was flawless, the architectural light was completely inspiring, and walking
                     to the reef every single morning at dawn completely reset my routine."</p>
-                <div class="testimonial-author">Marcus K. — Software Architect</div>
+                <div class="testimonial-author">Marcus K. â€” Software Architect</div>
             </div>
 
             <div class="testimonial-card reveal">
@@ -1370,7 +397,7 @@
                 <p class="testimonial-quote">"An absolute masterpiece of minimal boutique stay execution down on the
                     south coast. It completely captures that high-end, slow editorial luxury aesthetic that you see in
                     architectural prints. Exceptional hosting."</p>
-                <div class="testimonial-author">Elena R. — Creative Director</div>
+                <div class="testimonial-author">Elena R. â€” Creative Director</div>
             </div>
 
             <div class="testimonial-card reveal">
@@ -1384,7 +411,7 @@
                 <p class="testimonial-quote">"The location strikes the absolute perfect balance. It sits cleanly tucked
                     away inside quiet local paths to ensure restful sleep, yet we could pop out directly into Ahangama's
                     finest wave points within a couple minutes."</p>
-                <div class="testimonial-author">Julian & Sara — Slow Travelers</div>
+                <div class="testimonial-author">Julian & Sara â€” Slow Travelers</div>
             </div>
         </div>
     </section>
@@ -1393,7 +420,7 @@
     <section class="cta" id="cta">
         <div class="reveal">
             <h2 class="cta-title">Stay Longer.<br>Live Slower.</h2>
-            <button class="btn btn-dark">Check Availability</button>
+            <button type="button" class="btn btn-dark booking-open">Check Availability</button>
         </div>
     </section>
 
@@ -1436,134 +463,199 @@
         </div>
     </footer>
 
+    <!-- Booking Modal -->
+    <div class="booking-modal-overlay" id="booking-modal" role="dialog" aria-modal="true"
+        aria-labelledby="booking-title">
+        <div class="booking-modal">
+            <button type="button" class="booking-close" id="booking-close" aria-label="Close booking form">
+                <i data-lucide="x" size="20"></i>
+            </button>
+            <div class="booking-modal-header">
+                <span class="booking-tag">Reserve Your Stay</span>
+                <h3 id="booking-title">Book Your ELU Experience</h3>
+                <p>Complete the form below and we'll confirm availability within 24 hours. All prices update live as you
+                    select your dates and guests.</p>
+            </div>
+
+            <div class="booking-layout">
+                <form id="booking-form" class="booking-form" novalidate>
+                    <!-- Stay Details -->
+                    <div class="booking-section">
+                        <h4><i data-lucide="calendar-days" size="18"></i> Stay Details</h4>
+                        <div class="form-row">
+                            <label class="field-group">
+                                <span>Check-in Date</span>
+                                <input type="date" id="check-in" name="checkIn" required>
+                            </label>
+                            <label class="field-group">
+                                <span>Check-out Date</span>
+                                <input type="date" id="check-out" name="checkOut" required>
+                            </label>
+                        </div>
+                        <label class="field-group">
+                            <span>Number of Nights</span>
+                            <input type="text" id="nights-count" name="nights" readonly value="0">
+                        </label>
+                    </div>
+
+                    <!-- Guests -->
+                    <div class="booking-section">
+                        <h4><i data-lucide="users" size="18"></i> Guests</h4>
+                        <div class="form-row form-row-3">
+                            <label class="field-group">
+                                <span>Adults</span>
+                                <input type="number" id="adults" name="adults" min="1" max="8" value="2" required>
+                            </label>
+                            <label class="field-group">
+                                <span>Children</span>
+                                <input type="number" id="children" name="children" min="0" max="6" value="0">
+                            </label>
+                            <label class="field-group">
+                                <span>Infants <em class="field-optional">(optional)</em></span>
+                                <input type="number" id="infants" name="infants" min="0" max="4" value="0">
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Accommodation -->
+                    <div class="booking-section">
+                        <h4><i data-lucide="home" size="18"></i> Accommodation</h4>
+                        <label class="field-group">
+                            <span>Studio Type</span>
+                            <select id="studio-type" name="studioType" required>
+                                <option value="Package 1">Package 1 — Essential ($85/night)</option>
+                                <option value="Package 2">Package 2 — Comfort ($110/night)</option>
+                                <option value="Package 3">Package 3 — Deluxe ($145/night)</option>
+                            </select>
+                        </label>
+                        <div class="package-preview" id="package-preview"></div>
+                    </div>
+
+                    <!-- Guest Information -->
+                    <div class="booking-section">
+                        <h4><i data-lucide="user" size="18"></i> Guest Information</h4>
+                        <div class="form-row">
+                            <label class="field-group">
+                                <span>Full Name</span>
+                                <input type="text" id="guest-name" name="fullName" placeholder="Jane Smith" required
+                                    autocomplete="name">
+                            </label>
+                            <label class="field-group">
+                                <span>Email Address</span>
+                                <input type="email" id="guest-email" name="email" placeholder="jane@email.com" required
+                                    autocomplete="email">
+                            </label>
+                        </div>
+                        <div class="form-row">
+                            <label class="field-group">
+                                <span>Phone Number</span>
+                                <input type="tel" id="guest-phone" name="phone" placeholder="+94 77 123 4567" required
+                                    autocomplete="tel">
+                            </label>
+                            <label class="field-group">
+                                <span>Country</span>
+                                <select id="guest-country" name="country" required>
+                                    <option value="">Select country</option>
+                                    <option value="Sri Lanka">Sri Lanka</option>
+                                    <option value="United Kingdom">United Kingdom</option>
+                                    <option value="United States">United States</option>
+                                    <option value="Australia">Australia</option>
+                                    <option value="Germany">Germany</option>
+                                    <option value="France">France</option>
+                                    <option value="Netherlands">Netherlands</option>
+                                    <option value="India">India</option>
+                                    <option value="Singapore">Singapore</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Special Requests -->
+                    <div class="booking-section">
+                        <h4><i data-lucide="message-square" size="18"></i> Special Requests</h4>
+                        <div class="request-chips">
+                            <label class="request-chip"><input type="checkbox" name="requests" value="Early check-in">
+                                Early check-in</label>
+                            <label class="request-chip"><input type="checkbox" name="requests" value="Airport pickup">
+                                Airport pickup</label>
+                            <label class="request-chip"><input type="checkbox" name="requests" value="Baby cot"> Baby
+                                cot</label>
+                            <label class="request-chip"><input type="checkbox" name="requests" value="Extra bed"> Extra
+                                bed</label>
+                            <label class="request-chip"><input type="checkbox" name="requests" value="Surf lessons">
+                                Surf lessons</label>
+                            <label class="request-chip"><input type="checkbox" name="requests"
+                                    value="Dietary requirements"> Dietary requirements</label>
+                        </div>
+                        <label class="field-group">
+                            <span>Additional Notes</span>
+                            <textarea id="special-notes" name="notes"
+                                placeholder="Tell us anything else we should know about your stay…"></textarea>
+                        </label>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-submit-booking">
+                            <i data-lucide="send" size="16"></i>
+                            Send Booking Request
+                        </button>
+                    </div>
+                </form>
+
+                <aside class="booking-summary" aria-live="polite">
+                    <h4>Cost Summary</h4>
+                    <div class="summary-package" id="summary-package">Package 1 — Essential</div>
+                    <ul class="summary-lines" id="cost-breakdown">
+                        <li><span>Base rate</span><span>—</span></li>
+                        <li><span>Extra guests</span><span>—</span></li>
+                        <li><span>Nights</span><span>0</span></li>
+                    </ul>
+                    <div class="summary-divider"></div>
+                    <div class="summary-total">
+                        <span>Estimated Total</span>
+                        <strong id="cost-total">$0</strong>
+                    </div>
+                    <p class="summary-note">Final price confirmed upon availability check. Taxes &amp; service fees
+                        included.</p>
+                </aside>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="auth-modal-overlay" id="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+        <div class="auth-modal">
+            <button type="button" class="booking-close" id="auth-close" aria-label="Close login form">
+                <i data-lucide="x" size="20"></i>
+            </button>
+            <div class="auth-modal-header">
+                <span class="booking-tag">Guest Portal</span>
+                <h3 id="auth-title">Welcome Back</h3>
+                <p id="auth-subtitle">Sign in to manage your bookings and save your details.</p>
+            </div>
+            <form id="auth-form" class="auth-form">
+                <label class="field-group">
+                    <span>Email Address</span>
+                    <input type="email" id="auth-email" placeholder="you@email.com" required autocomplete="email">
+                </label>
+                <label class="field-group">
+                    <span>Password</span>
+                    <input type="password" id="auth-password" placeholder="••••••••" required
+                        autocomplete="current-password">
+                </label>
+                <button type="submit" class="btn btn-submit-booking" id="auth-submit">Login</button>
+            </form>
+            <p class="auth-demo-note">Demo login — any email &amp; password works.</p>
+        </div>
+    </div>
+
     <!-- Back to Top Button -->
     <button class="back-to-top" id="back-to-top" aria-label="Scroll back to top">
         <i data-lucide="arrow-up" size="18"></i>
     </button>
 
-    <!-- --- JAVASCRIPT LOGIC ARCHITECTURE --- -->
-    <script>
-        // Initialize Lucide SVG Icons instantly
-        lucide.createIcons();
-
-        // 1. Loader Screen Fade Out Interaction
-        window.addEventListener('load', () => {
-            const loader = document.getElementById('loader');
-            setTimeout(() => {
-                loader.classList.add('fade-out');
-            }, 600);
-        });
-
-        // 2. Sticky Navbar Morphing & Scroll Progress Calculation
-        const navbar = document.getElementById('navbar');
-        const scrollProgress = document.getElementById('scroll-progress');
-        const backToTop = document.getElementById('back-to-top');
-
-        window.addEventListener('scroll', () => {
-            // Navbar transformations
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-
-            // Scroll progress layout line calculator
-            const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-            if (totalHeight > 0) {
-                const progressPercentage = (window.scrollY / totalHeight) * 100;
-                scrollProgress.style.width = progressPercentage + '%';
-            }
-
-            // Back To Top Visibility Toggle
-            if (window.scrollY > 600) {
-                backToTop.classList.add('visible');
-            } else {
-                backToTop.classList.remove('visible');
-            }
-
-            // Hero Smooth Parallax Effect Execution
-            const heroBg = document.getElementById('hero-bg');
-            if (heroBg) {
-                let scrollOffset = window.pageYOffset;
-                heroBg.style.transform = `scale(1.05) translateY(${scrollOffset * 0.4}px)`;
-            }
-
-            // Dynamic Navigation Link Active Class Indicator tracking
-            trackActiveNavigation();
-        });
-
-        // Back to top click handler
-        backToTop.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        // 3. Mobile Drawer Responsive Menu Overlay Setup
-        const menuBtn = document.getElementById('menu-btn');
-        const mobileOverlay = document.getElementById('mobile-overlay');
-        const mobileLinks = document.querySelectorAll('.mobile-link');
-
-        function toggleMobileMenu() {
-            menuBtn.classList.toggle('open');
-            mobileOverlay.classList.toggle('open');
-            // Disable background scrolling when menu drawer is deployed
-            if (mobileOverlay.classList.contains('open')) {
-                document.body.style.overflow = 'hidden';
-            } else {
-                document.body.style.overflow = 'auto';
-            }
-        }
-
-        menuBtn.addEventListener('click', toggleMobileMenu);
-        mobileLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                toggleMobileMenu();
-            });
-        });
-
-        // 4. Advanced Reveal-On-Scroll Intersection Observer Engine
-        const revealElements = document.querySelectorAll('.reveal');
-        const revealObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                    observer.unobserve(entry.target); // Optimize DOM tracking cycles
-                }
-            });
-        }, {
-            threshold: 0.1,
-            rootMargin: "0px 0px -50px 0px"
-        });
-
-        revealElements.forEach(element => {
-            revealObserver.observe(element);
-        });
-
-        // 5. Active Section Menu Bar Highlighting Logic
-        const sections = document.querySelectorAll('section');
-        const navLinks = document.querySelectorAll('.nav-links a');
-
-        function trackActiveNavigation() {
-            let currentSectionId = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (window.scrollY >= (sectionTop - 300)) {
-                    currentSectionId = section.getAttribute('id');
-                }
-            });
-
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${currentSectionId}`) {
-                    link.classList.add('active');
-                }
-                // Default handling for top calculation edge cases
-                if (window.scrollY < 200 && link.getAttribute('href') === '#') {
-                    link.classList.add('active');
-                }
-            });
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 
 </html>
