@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELU Studio | Modern Studios by the Sea — Ahangama, Sri Lanka</title>
+
+    <!-- Google Fonts: Cormorant Garamond & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Lucide Icons for Minimalistic iconography -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* --- CSS VARIABLES & THEME CONFIGURATION --- */
+        :root {
+            --bg-primary: #FAF9F6;
+            /* Warm Off-White */
+            --bg-secondary: #F4F1EA;
+            /* Light Sand / Beige */
+            --text-main: #111111;
+            /* Deep Editorial Black */
+            --text-muted: #666666;
+            /* Soft Luxury Gray */
+            --border-color: #E6E2D8;
+            /* Natural Tone Border */
+            --font-serif: 'Cormorant Garamond', serif;
+            --font-sans: 'Inter', sans-serif;
+            --transition-smooth: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-micro: all 0.2s ease;
+        }
+
+        /* --- BASE RESET & GLOBAL STYLES --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            font-size: 16px;
+        }
+
+        body {
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            transition: var(--transition-micro);
+        }
+
+        button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        img,
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: var(--transition-smooth);
+        }
+
+        /* --- SCROLL PROGRESS BAR --- */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--text-main);
+            z-index: 1001;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        /* --- LOADING ANIMATION --- */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+
+        .loader.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-title {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0.3;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* --- REVEAL ON SCROLL FRAMEWORK --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- UTILITY CLASSES --- */
+        .section-padding {
+            padding: 8rem 10% 8rem 10%;
+        }
+
+        @media(max-width: 768px) {
+            .section-padding {
+                padding: 5rem 6% 5rem 6%;
+            }
+        }
+
+        .editorial-title {
+            font-family: var(--font-serif);
+            font-size: 3.5rem;
+            font-weight: 300;
+            line-height: 1.2;
+            margin-bottom: 2rem;
+        }
+
+        @media(max-width: 768px) {
+            .editorial-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* --- PREMIUM NAVIGATION --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 2rem 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: var(--transition-smooth);
+        }
+
+        .navbar.scrolled {
+            padding: 1.2rem 10%;
+            background: rgba(250, 249, 246, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        @media(max-width: 768px) {
+
+            .navbar,
+            .navbar.scrolled {
+                padding: 1.5rem 6%;
+            }
+        }
+
+        .nav-logo {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .nav-links a {
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--text-main);
+            transition: var(--transition-micro);
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        @media(max-width: 1024px) {
+            .nav-links {
+                display: none;
+            }
+        }
+
+        /* Mobile Menu Triggers */
+        .menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            z-index: 1002;
+        }
+
+        .menu-btn span {
+            width: 24px;
+            height: 1px;
+            background: var(--text-main);
+            transition: var(--transition-micro);
+        }
+
+        @media(max-width: 1024px) {
+            .menu-btn {
+                display: flex;
+            }
+        }
+
+        .menu-btn.open span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .menu-btn.open span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-btn.open span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        .mobile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: var(--bg-primary);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        .mobile-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-overlay a {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            font-weight: 300;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            width: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 0 10%;
+            overflow: hidden;
+        }
+
+        @media(max-width: 768px) {
+            .hero {
+                padding: 0 6%;
+            }
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            transform: scale(1.05);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.3) 100%);
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 55rem;
+            color: #FFFFFF;
+        }
+
+        .hero-title {
+            font-family: var(--font-serif);
+            font-size: 5.5rem;
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @media(max-width: 768px) {
+            .hero-title {
+                font-size: 3.2rem;
+            }
+        }
+
+        .hero-sub {
+            font-size: 1.1rem;
+            font-weight: 300;
+            letter-spacing: 0.03em;
+            line-height: 1.8;
+            margin-bottom: 3.5rem;
+            max-width: 32rem;
+            opacity: 0.9;
+            animation: fadeInUp 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1.5rem;
+            animation: fadeInUp 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @media(max-width: 480px) {
+            .btn-group {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        .btn {
+            padding: 1.2rem 2.5rem;
+            font-size: 0.85rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-weight: 500;
+            border-radius: 0;
+            transition: var(--transition-smooth);
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: #FFFFFF;
+            color: var(--text-main);
+        }
+
+        .btn-primary:hover {
+            background: var(--text-main);
+            color: #FFFFFF;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: #FFFFFF;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            border-color: #FFFFFF;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- ABOUT SECTION --- */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 6rem;
+            align-items: center;
+        }
+
+        @media(max-width: 1024px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+            }
+        }
+
+        .about-text p {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .about-text p strong {
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        .about-img-wrapper {
+            height: 35rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .about-img-wrapper:hover img {
+            transform: scale(1.03);
+        }
+
+        /* --- STUDIOS SECTION --- */
+        .studios {
+            background-color: var(--bg-secondary);
+        }
+
+        .studio-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+            margin-top: 4rem;
+        }
+
+        @media(max-width: 1024px) {
+            .studio-grid {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+            }
+        }
+
+        .studio-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            transition: var(--transition-smooth);
+        }
+
+        .studio-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.03);
+        }
+
+        .studio-img {
+            height: 26rem;
+            overflow: hidden;
+        }
+
+        .studio-card:hover .studio-img img {
+            transform: scale(1.05);
+        }
+
+        .studio-info {
+            padding: 2.5rem;
+        }
+
+        .studio-name {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .studio-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .studio-amenities {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.5rem;
+        }
+
+        .amenity {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .amenity i {
+            width: 16px;
+            color: var(--text-main);
+        }
+
+        /* --- LIFESTYLE SECTION --- */
+        .lifestyle-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 1.5rem;
+            margin-top: 4rem;
+        }
+
+        @media(max-width: 1024px) {
+            .lifestyle-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media(max-width: 640px) {
+            .lifestyle-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .lifestyle-item {
+            position: relative;
+            height: 22rem;
+            overflow: hidden;
+        }
+
+        .lifestyle-item img {
+            filter: grayscale(15%);
+        }
+
+        .lifestyle-item:hover img {
+            transform: scale(1.06);
+            filter: grayscale(0%);
+        }
+
+        .lifestyle-label {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 1.5rem;
+            color: #FFFFFF;
+            font-size: 0.9rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-weight: 500;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* --- GALLERY SECTION --- */
+        .gallery {
+            background: var(--bg-secondary);
+        }
+
+        .gallery-masonry {
+            columns: 4 22rem;
+            column-gap: 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .gallery-thumb {
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            background: var(--bg-primary);
+            cursor: pointer;
+        }
+
+        .gallery-thumb:hover img {
+            transform: scale(1.04);
+        }
+
+        /* --- WHY STAY HERE --- */
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        @media(max-width: 1024px) {
+            .why-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width: 640px) {
+            .why-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .why-card {
+            padding: 2.5rem;
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition-smooth);
+        }
+
+        .why-card:hover {
+            border-bottom-color: var(--text-main);
+        }
+
+        .why-icon {
+            margin-bottom: 1.5rem;
+        }
+
+        .why-card h3 {
+            font-family: var(--font-serif);
+            font-size: 1.6rem;
+            font-weight: 400;
+            margin-bottom: 0.75rem;
+        }
+
+        .why-card p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        /* --- LOCATION SECTION --- */
+        .location {
+            background: var(--bg-secondary);
+        }
+
+        .location-grid {
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            gap: 6rem;
+            align-items: center;
+        }
+
+        @media(max-width: 1024px) {
+            .location-grid {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+            }
+        }
+
+        .location-details h3 {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .location-details ul {
+            list-style: none;
+        }
+
+        .location-details li {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            font-weight: 300;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .location-details li::before {
+            content: '—';
+            color: var(--text-main);
+        }
+
+        .map-placeholder {
+            height: 32rem;
+            background: #EAE7DF;
+            border: 1px solid var(--border-color);
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .map-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0.4;
+            filter: grayscale(100%);
+        }
+
+        .map-box {
+            position: relative;
+            background: #FFFFFF;
+            padding: 2rem;
+            max-width: 22rem;
+            text-align: center;
+            box-shadow: 0 20px 4px rgba(0, 0, 0, 0.01);
+            z-index: 2;
+        }
+
+        .map-box h4 {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .map-box p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* --- TESTIMONIALS --- */
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+            margin-top: 4rem;
+        }
+
+        @media(max-width: 1024px) {
+            .testimonial-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+        }
+
+        .testimonial-card {
+            padding: 3rem 2rem;
+            position: relative;
+        }
+
+        .testimonial-quote {
+            font-family: var(--font-serif);
+            font-size: 1.6rem;
+            font-style: italic;
+            line-height: 1.5;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .testimonial-author {
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .testimonial-stars {
+            display: flex;
+            gap: 0.25rem;
+            margin-bottom: 1rem;
+            color: #C5A880;
+        }
+
+        /* --- CTA SECTION --- */
+        .cta {
+            background: var(--bg-secondary);
+            text-align: center;
+            padding: 10rem 10%;
+        }
+
+        .cta-title {
+            font-family: var(--font-serif);
+            font-size: 5rem;
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 3.5rem;
+        }
+
+        @media(max-width: 768px) {
+            .cta-title {
+                font-size: 3rem;
+            }
+        }
+
+        .btn-dark {
+            background: var(--text-main);
+            color: #FFFFFF;
+            border: 1px solid var(--text-main);
+        }
+
+        .btn-dark:hover {
+            background: transparent;
+            color: var(--text-main);
+            transform: translateY(-2px);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: var(--bg-primary);
+            padding: 5rem 10% 3rem 10%;
+            border-top: 1px solid var(--border-color);
+        }
+
+        @media(max-width: 768px) {
+            footer {
+                padding: 4rem 6% 2rem 6%;
+            }
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4rem;
+            margin-bottom: 5rem;
+        }
+
+        @media(max-width: 1024px) {
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 3rem;
+            }
+        }
+
+        @media(max-width: 640px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+        }
+
+        .footer-col h4 {
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .footer-col p,
+        .footer-col a {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+            display: block;
+            font-weight: 300;
+        }
+
+        .footer-col a:hover {
+            color: var(--text-main);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border-color);
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        @media(max-width: 768px) {
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+
+        .concept-note {
+            font-style: italic;
+            color: #A09886;
+            font-weight: 400;
+        }
+
+        /* --- BACK TO TOP --- */
+        .back-to-top {
+            position: fixed;
+            bottom: 2.5rem;
+            right: 2.5rem;
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 99;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--text-main);
+            color: #FFFFFF;
+            border-color: var(--text-main);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Scroll Progress Bar -->
+    <div id="scroll-progress"></div>
+
+    <!-- Luxury Loading Animation Screen -->
+    <div class="loader" id="loader">
+        <div class="loader-title">ELU Studios</div>
+    </div>
+
+    <!-- Sticky Navigation Bar -->
+    <nav class="navbar" id="navbar">
+        <a href="#" class="nav-logo">ELU Studios</a>
+        <div class="nav-links">
+            <a href="#" class="active">Home</a>
+            <a href="#about">About</a>
+            <a href="#studios">Studios</a>
+            <a href="#lifestyle">Lifestyle</a>
+            <a href="#gallery">Gallery</a>
+            <a href="#location">Location</a>
+        </div>
+        <button class="menu-btn" id="menu-btn" aria-label="Toggle Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- Mobile Drawer Overlay Menu -->
+    <div class="mobile-overlay" id="mobile-overlay">
+        <a href="#" class="mobile-link">Home</a>
+        <a href="#about" class="mobile-link">About</a>
+        <a href="#studios" class="mobile-link">Studios</a>
+        <a href="#lifestyle" class="mobile-link">Lifestyle</a>
+        <a href="#gallery" class="mobile-link">Gallery</a>
+        <a href="#location" class="mobile-link">Location</a>
+    </div>
+
+    <!-- 1. Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-bg" id="hero-bg">
+            <video src="sea.mp4" autoplay loop muted playsinline
+                aria-label="ELU Studio Luxury Sea View Exterior Architecture"></video>
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Stay by the Sea<br>Live Slowly.</h1>
+            <p class="hero-sub">Based in Ahangama, Sri Lanka. Made for slow living, longer stays, and light-filled days.
+            </p>
+            <div class="btn-group">
+                <a href="#about" class="btn btn-primary">Explore</a>
+                <a href="#cta" class="btn btn-secondary">Book Your Stay</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. About Section -->
+    <section class="section-padding reveal" id="about">
+        <div class="about-grid">
+            <div class="about-text">
+                <h2 class="editorial-title">Architectural serenity designed for the slow pace of island life.</h2>
+                <p>ELU Studio blends contemporary minimalist lines with the raw, tropical beauty of Sri Lanka's southern
+                    coastline. Every studio space is meticulously oriented to invite natural mornings and filter
+                    architectural shadows as the day turns.</p>
+                <p><strong>A place for pause.</strong> Designed intentionally for remote creative professionals, seekers
+                    of swell, and those wishing to plant soft roots down by the ocean for weeks or months at a time.</p>
+            </div>
+            <div class="about-img-wrapper">
+                <img src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=1000"
+                    alt="Minimalist interior architecture with high natural light shadows">
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Studios Section -->
+    <section class="section-padding studios" id="studios">
+        <div class="reveal">
+            <h2 class="editorial-title" style="text-align: center;">Our Sanctuary Spaces</h2>
+            <p
+                style="text-align: center; color: var(--text-muted); max-width: 32rem; margin: -1rem auto 3rem auto; font-weight: 300;">
+                Three uniquely structured layouts offering refined luxury, bespoke natural wood finishings, and deep
+                coastal quiet.</p>
+        </div>
+
+        <div class="studio-grid">
+            <!-- Studio One -->
+            <div class="studio-card reveal">
+                <div class="studio-img">
+                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1000"
+                        alt="Studio One Premium Ocean View Interior Layout">
+                </div>
+                <div class="studio-info">
+                    <h3 class="studio-name">Studio One</h3>
+                    <p class="studio-desc">Elevated ocean views featuring clean floor-to-ceiling panoramic glass panels
+                        and custom teak appointments.</p>
+                    <div class="studio-amenities">
+                        <div class="amenity"><i data-lucide="bed"></i> Queen Bed</div>
+                        <div class="amenity"><i data-lucide="chef-hat"></i> Fitted Kitchen</div>
+                        <div class="amenity"><i data-lucide="laptop"></i> Workspace</div>
+                        <div class="amenity"><i data-lucide="wifi"></i> High-Speed WiFi</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Studio Two -->
+            <div class="studio-card reveal">
+                <div class="studio-img">
+                    <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&w=1000"
+                        alt="Studio Two Airy Architectural Minimalist Living Unit">
+                </div>
+                <div class="studio-info">
+                    <h3 class="studio-name">Studio Two</h3>
+                    <p class="studio-desc">A spacious, light-drenched layout emphasizing expansive cross-ventilation
+                        breezes and a minimalist concrete aesthetic.</p>
+                    <div class="studio-amenities">
+                        <div class="amenity"><i data-lucide="bed"></i> Queen Bed</div>
+                        <div class="amenity"><i data-lucide="chef-hat"></i> Fitted Kitchen</div>
+                        <div class="amenity"><i data-lucide="laptop"></i> Workspace</div>
+                        <div class="amenity"><i data-lucide="wifi"></i> High-Speed WiFi</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Garden Studio -->
+            <div class="studio-card reveal">
+                <div class="studio-img">
+                    <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=1000"
+                        alt="Garden Studio with private courtyard access">
+                </div>
+                <div class="studio-info">
+                    <h3 class="studio-name">Garden Studio</h3>
+                    <p class="studio-desc">Nestled within our lower biological stone courtyard, offering private access
+                        to outdoor open-air bathing spaces.</p>
+                    <div class="studio-amenities">
+                        <div class="amenity"><i data-lucide="bed"></i> Queen Bed</div>
+                        <div class="amenity"><i data-lucide="chef-hat"></i> Fitted Kitchen</div>
+                        <div class="amenity"><i data-lucide="laptop"></i> Workspace</div>
+                        <div class="amenity"><i data-lucide="wifi"></i> High-Speed WiFi</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Lifestyle Section -->
+    <section class="section-padding" id="lifestyle">
+        <div class="reveal">
+            <h2 class="editorial-title">Rhythms of Ahangama</h2>
+            <p style="color: var(--text-muted); font-weight: 300; max-width: 35rem; margin-top: -1rem;">Days at ELU
+                balance deep focus with sudden dips into warm saltwater pools. Here is how your daily design unfurls.
+            </p>
+        </div>
+
+        <div class="lifestyle-grid">
+            <div class="lifestyle-item reveal">
+                <img src="https://images.unsplash.com/photo-1502680390469-be75c86b636f?q=80&w=600"
+                    alt="Surfing peeling waves on the south coast of Sri Lanka">
+                <div class="lifestyle-label">Surf</div>
+            </div>
+            <div class="lifestyle-item reveal">
+                <img src="https://images.unsplash.com/photo-1507133750040-4a8f57021571?q=80&w=600"
+                    alt="Pouring single origin specialty coffee in Ahangama">
+                <div class="lifestyle-label">Coffee</div>
+            </div>
+            <div class="lifestyle-item reveal">
+                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=600"
+                    alt="Slow peaceful morning light through villa window blinds">
+                <div class="lifestyle-label">Slow Mornings</div>
+            </div>
+            <div class="lifestyle-item reveal">
+                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=600"
+                    alt="Remote workspace setups for digital nomad software engineers">
+                <div class="lifestyle-label">Remote Work</div>
+            </div>
+            <div class="lifestyle-item reveal">
+                <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=600"
+                    alt="Warm golden hour sunset beach walks">
+                <div class="lifestyle-label">Sunset Walks</div>
+            </div>
+            <div class="lifestyle-item reveal">
+                <img src="https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?q=80&w=600"
+                    alt="Minimalist beachfront ocean view property lifestyle">
+                <div class="lifestyle-label">Ocean Living</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Gallery Section -->
+    <section class="section-padding gallery" id="gallery">
+        <div class="reveal" style="text-align: center;">
+            <h2 class="editorial-title">The Gallery Aesthetic</h2>
+            <p style="color: var(--text-muted); font-weight: 300; margin-top: -1rem; margin-bottom: 2rem;">A deep view
+                inside our light architectural philosophy, materials, and nearby island textures.</p>
+        </div>
+
+        <div class="gallery-masonry">
+            <div class="gallery-thumb reveal"><img
+                    src="https://images.unsplash.com/photo-1618220179428-22790b461013?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8ZnVybml0dXJlJTIwZGVzaWdufGVufDB8fDB8fHww"
+                    alt="Interior architectural details"></div>
+            <div class="gallery-thumb reveal"><img
+                    src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGJlYWNoJTIwd2FsbHBhcGVyfGVufDB8fDB8fHww"
+                    alt="Sunlight casting beautiful linear shadows on concrete walls"></div>
+            <div class="gallery-thumb reveal"><img
+                    src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8aW50ZXJpb3J8ZW58MHx8MHx8fDA%3D"
+                    alt="Sri Lanka ocean coastline morning view"></div>
+            <div class="gallery-thumb reveal"><img
+                    src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=600"
+                    alt="Linen bedding minimalist setup styling"></div>
+            <div class="gallery-thumb reveal"><img
+                    src="https://images.unsplash.com/photo-1460627390041-532a28402358?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8YmVhY2glMjBzdW5zZXR8ZW58MHx8MHx8fDA%3D"
+                    alt="Boutique villa structural lines by the pool"></div>
+            <div class="gallery-thumb reveal"><img
+                    src="https://plus.unsplash.com/premium_photo-1676320514136-5a15d9f97dfa?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YmF0aHJvb218ZW58MHx8MHx8fDA%3D"
+                    alt="Lush tropical green palms swaying outside minimalist windows"></div>
+            <div class="gallery-thumb reveal"><img
+                    src="https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=600"
+                    alt="Luxury bespoke bedroom space design layout"></div>
+            <div class="gallery-thumb reveal"><img
+                    src="https://images.unsplash.com/photo-1487015307662-6ce6210680f1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8ZnVybml0dXJlfGVufDB8fDB8fHww"
+                    alt="Luxury tiled private bathroom elements"></div>
+            <div class="gallery-thumb reveal"><img
+                    src="https://images.unsplash.com/photo-1606744837616-56c9a5c6a6eb?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8ZnVybml0dXJlJTIwZGVzaWdufGVufDB8fDB8fHww"
+                    alt="Handcrafted custom organic wood chair detail"></div>
+            <div class="gallery-thumb reveal"><img
+                    src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=600"
+                    alt="Calm architectural lines morning light highlight"></div>
+            <div class="gallery-thumb reveal"><img
+                    src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=600"
+                    alt="Beautiful pastel tones on south coast Sri Lanka sea"></div>
+            <div class="gallery-thumb reveal"><img
+                    src="https://images.unsplash.com/photo-1582582621959-48d27397dc69?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGx1eGVyeSUyMGJlZCUyMHJvb218ZW58MHx8MHx8fDA%3D"
+                    alt="Slow travel landscape texture exploration"></div>
+        </div>
+    </section>
+
+    <!-- 6. Why Stay Here Section -->
+    <section class="section-padding">
+        <div class="reveal" style="text-align: center;">
+            <h2 class="editorial-title">Designed for Cultured Living</h2>
+        </div>
+
+        <div class="why-grid">
+            <div class="why-card reveal">
+                <div class="why-icon"><i data-lucide="sun" stroke-width="1.5" size="32"></i></div>
+                <h3>Natural Light</h3>
+                <p>Bespoke structural orientations deliberately maximize gentle morning light while protecting internal
+                    spaces from direct tropical noon heat.</p>
+            </div>
+            <div class="why-card reveal">
+                <div class="why-icon"><i data-lucide="compass" stroke-width="1.5" size="32"></i></div>
+                <h3>Minimal Interiors</h3>
+                <p>Uncluttered architectural environments constructed with smooth lime wash, local raw concrete, and
+                    hand-finished premium matte teak.</p>
+            </div>
+            <div class="why-card reveal">
+                <div class="why-icon"><i data-lucide="navigation" stroke-width="1.5" size="32"></i></div>
+                <h3>Steps to the Beach</h3>
+                <p>A short, peaceful two-minute walk beneath shaded palm leaves brings you directly to the soft sand and
+                    uncrowded reef swells of Ahangama.</p>
+            </div>
+            <div class="why-card reveal">
+                <div class="why-icon"><i data-lucide="shield-check" stroke-width="1.5" size="32"></i></div>
+                <h3>Quiet Surroundings</h3>
+                <p>Positioned along a highly private cul-de-sac path away from the main highway noises, ensuring pure
+                    birdsong and ocean tracking.</p>
+            </div>
+            <div class="why-card reveal">
+                <div class="why-icon"><i data-lucide="wifi" stroke-width="1.5" size="32"></i></div>
+                <h3>Digital Nomad Ready</h3>
+                <p>Dedicated architectural built-in desks paired with secure, robust enterprise-grade fiber backends
+                    designed for seamless engineering output.</p>
+            </div>
+            <div class="why-card reveal">
+                <div class="why-icon"><i data-lucide="calendar" stroke-width="1.5" size="32"></i></div>
+                <h3>Long Stays Welcome</h3>
+                <p>Fully equipped kitchen units, deeply comprehensive weekly linen adjustments, and preferred seasonal
+                    rates tailored for slower residencies.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Location Section -->
+    <section class="section-padding location" id="location">
+        <div class="location-grid">
+            <div class="location-details reveal">
+                <h2 class="editorial-title">Ahangama,<br>The Southern Core</h2>
+                <p style="color: var(--text-muted); font-weight: 300; font-size: 1.1rem; line-height: 1.8;">Ahangama is
+                    a peaceful coastal stretch defined by its world-class intermediate reef breaks, excellent organic
+                    cafes, and a highly sophisticated, multi-cultural community of ocean lovers.</p>
+
+                <h3>Nearby Surf Breaks</h3>
+                <ul>
+                    <li>Kabalana Beach & The Rock (3 mins away)</li>
+                    <li>Marshmallows Reef Break (Walking distance)</li>
+                    <li>Sticks Reef & Gas Stations (5 mins away)</li>
+                </ul>
+
+                <h3>Exceptional Cafes & Dining</h3>
+                <ul>
+                    <li>Bark Cafe & Community Concept Space</li>
+                    <li>Cactus Boutique Cafe & Seaside Smoothies</li>
+                    <li>Trax Ahangama (Artisan Dinners & Live Sound)</li>
+                </ul>
+            </div>
+
+            <div class="map-placeholder reveal">
+                <!-- Abstract minimalist premium vector layout resembling an elegant modern custom map canvas -->
+                <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1000" class="map-bg"
+                    alt="Abstract sand texture map baseline representation">
+                <div class="map-box">
+                    <i data-lucide="map-pin" style="margin-bottom: 0.5rem; color: var(--text-main);"></i>
+                    <h4>ELU Studio Location</h4>
+                    <p>Galle Road, Ahangama, South Coast, Sri Lanka</p>
+                    <p
+                        style="font-size: 0.75rem; margin-top: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-main); font-weight: 600;">
+                        Directions provided upon booking</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. Testimonials Section -->
+    <section class="section-padding">
+        <div class="reveal" style="text-align: center;">
+            <h2 class="editorial-title">The Resident Experience</h2>
+        </div>
+
+        <div class="testimonial-grid">
+            <div class="testimonial-card reveal">
+                <div class="testimonial-stars">
+                    <i data-lucide="star" fill="currentColor" size="14"></i>
+                    <i data-lucide="star" fill="currentColor" size="14"></i>
+                    <i data-lucide="star" fill="currentColor" size="14"></i>
+                    <i data-lucide="star" fill="currentColor" size="14"></i>
+                    <i data-lucide="star" fill="currentColor" size="14"></i>
+                </div>
+                <p class="testimonial-quote">"ELU became my complete remote engineering base for two full months. The
+                    internet infrastructure was flawless, the architectural light was completely inspiring, and walking
+                    to the reef every single morning at dawn completely reset my routine."</p>
+                <div class="testimonial-author">Marcus K. — Software Architect</div>
+            </div>
+
+            <div class="testimonial-card reveal">
+                <div class="testimonial-stars">
+                    <i data-lucide="star" fill="currentColor" size="14"></i>
+                    <i data-lucide="star" fill="currentColor" size="14"></i>
+                    <i data-lucide="star" fill="currentColor" size="14"></i>
+                    <i data-lucide="star" fill="currentColor" size="14"></i>
+                    <i data-lucide="star" fill="currentColor" size="14"></i>
+                </div>
+                <p class="testimonial-quote">"An absolute masterpiece of minimal boutique stay execution down on the
+                    south coast. It completely captures that high-end, slow editorial luxury aesthetic that you see in
+                    architectural prints. Exceptional hosting."</p>
+                <div class="testimonial-author">Elena R. — Creative Director</div>
+            </div>
+
+            <div class="testimonial-card reveal">
+                <div class="testimonial-stars">
+                    <i data-lucide="star" fill="currentColor" size="14"></i>
+                    <i data-lucide="star" fill="currentColor" size="14"></i>
+                    <i data-lucide="star" fill="currentColor" size="14"></i>
+                    <i data-lucide="star" fill="currentColor" size="14"></i>
+                    <i data-lucide="star" fill="currentColor" size="14"></i>
+                </div>
+                <p class="testimonial-quote">"The location strikes the absolute perfect balance. It sits cleanly tucked
+                    away inside quiet local paths to ensure restful sleep, yet we could pop out directly into Ahangama's
+                    finest wave points within a couple minutes."</p>
+                <div class="testimonial-author">Julian & Sara — Slow Travelers</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. CTA Section -->
+    <section class="cta" id="cta">
+        <div class="reveal">
+            <h2 class="cta-title">Stay Longer.<br>Live Slower.</h2>
+            <button class="btn btn-dark">Check Availability</button>
+        </div>
+    </section>
+
+    <!-- 10. Footer Section -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4
+                    style="font-family: var(--font-serif); font-size: 1.4rem; font-weight: 400; text-transform: none; letter-spacing: 0;">
+                    ELU Studio.</h4>
+                <p style="margin-top: 1rem; max-width: 14rem;">Modern studios by the sea designed for high-end coastal
+                    immersion.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Inquiries</h4>
+                <a href="mailto:hello@elustudio.com">hello@elustudio.com</a>
+                <a href="tel:+94771234567">+94 (77) 123 4567</a>
+            </div>
+            <div class="footer-col">
+                <h4>Location</h4>
+                <p>Galle Road, Ahangama<br>South Coast, Sri Lanka</p>
+            </div>
+            <div class="footer-col">
+                <h4>Social Directory</h4>
+                <a href="#" target="_blank">Instagram</a>
+                <a href="#" target="_blank">Journal</a>
+                <a href="#" target="_blank">Pinterest</a>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 ELU Studio. All Rights Reserved.</p>
+            <p class="concept-note">Unofficial website concept for presentation purposes.</p>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="back-to-top" aria-label="Scroll back to top">
+        <i data-lucide="arrow-up" size="18"></i>
+    </button>
+
+    <!-- --- JAVASCRIPT LOGIC ARCHITECTURE --- -->
+    <script>
+        // Initialize Lucide SVG Icons instantly
+        lucide.createIcons();
+
+        // 1. Loader Screen Fade Out Interaction
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            setTimeout(() => {
+                loader.classList.add('fade-out');
+            }, 600);
+        });
+
+        // 2. Sticky Navbar Morphing & Scroll Progress Calculation
+        const navbar = document.getElementById('navbar');
+        const scrollProgress = document.getElementById('scroll-progress');
+        const backToTop = document.getElementById('back-to-top');
+
+        window.addEventListener('scroll', () => {
+            // Navbar transformations
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+
+            // Scroll progress layout line calculator
+            const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+            if (totalHeight > 0) {
+                const progressPercentage = (window.scrollY / totalHeight) * 100;
+                scrollProgress.style.width = progressPercentage + '%';
+            }
+
+            // Back To Top Visibility Toggle
+            if (window.scrollY > 600) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+
+            // Hero Smooth Parallax Effect Execution
+            const heroBg = document.getElementById('hero-bg');
+            if (heroBg) {
+                let scrollOffset = window.pageYOffset;
+                heroBg.style.transform = `scale(1.05) translateY(${scrollOffset * 0.4}px)`;
+            }
+
+            // Dynamic Navigation Link Active Class Indicator tracking
+            trackActiveNavigation();
+        });
+
+        // Back to top click handler
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // 3. Mobile Drawer Responsive Menu Overlay Setup
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileOverlay = document.getElementById('mobile-overlay');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        function toggleMobileMenu() {
+            menuBtn.classList.toggle('open');
+            mobileOverlay.classList.toggle('open');
+            // Disable background scrolling when menu drawer is deployed
+            if (mobileOverlay.classList.contains('open')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        menuBtn.addEventListener('click', toggleMobileMenu);
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                toggleMobileMenu();
+            });
+        });
+
+        // 4. Advanced Reveal-On-Scroll Intersection Observer Engine
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Optimize DOM tracking cycles
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        });
+
+        revealElements.forEach(element => {
+            revealObserver.observe(element);
+        });
+
+        // 5. Active Section Menu Bar Highlighting Logic
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-links a');
+
+        function trackActiveNavigation() {
+            let currentSectionId = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.scrollY >= (sectionTop - 300)) {
+                    currentSectionId = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${currentSectionId}`) {
+                    link.classList.add('active');
+                }
+                // Default handling for top calculation edge cases
+                if (window.scrollY < 200 && link.getAttribute('href') === '#') {
+                    link.classList.add('active');
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
