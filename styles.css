@@ -160,6 +160,7 @@ video {
     align-items: center;
     gap: 1.5rem;
     z-index: 1000;
+    color: #FFFFFF;
     transition: var(--transition-smooth);
 }
 
@@ -168,6 +169,7 @@ video {
     background: rgba(250, 249, 246, 0.281);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border-color);
+    color: var(--text-main);
 }
 
 @media(max-width: 768px) {
@@ -178,14 +180,13 @@ video {
 }
 
 .nav-logo {
-    font-family: var(--font-serif);
-    font-size: 2rem;
-
-    font-weight: 800;
-    letter-spacing: 0.15em;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 2.0rem;
+    font-weight: 500;
+    letter-spacing: 0.35em;
     text-transform: uppercase;
-    color: #ffffff;
-    -webkit-text-stroke: 0.5px rgba(99, 185, 255, 0.473);
+    color: inherit;
+    line-height: 1;
 }
 
 .nav-links {
@@ -211,7 +212,7 @@ video {
     left: 0;
     width: 0;
     height: 1px;
-    background: var(--text-main);
+    background: currentColor;
     transition: var(--transition-micro);
 }
 
@@ -246,14 +247,20 @@ video {
     text-transform: uppercase;
     font-weight: 600;
     padding: 0.65rem 1.25rem;
-    border: 1px solid var(--text-main);
+    border: 1px solid currentColor;
     background: transparent;
-    color: var(--text-main);
+    color: inherit;
     transition: var(--transition-micro);
 }
 
 .btn-nav-auth:hover,
 .btn-nav-auth.logged-in {
+    background: #FFFFFF;
+    color: var(--text-main);
+}
+
+.navbar.scrolled .btn-nav-auth:hover,
+.navbar.scrolled .btn-nav-auth.logged-in {
     background: var(--text-main);
     color: #FFFFFF;
 }
@@ -285,7 +292,7 @@ video {
 .menu-btn span {
     width: 24px;
     height: 1px;
-    background: var(--text-main);
+    background: currentColor;
     transition: var(--transition-micro);
 }
 
@@ -297,6 +304,10 @@ video {
 
 .menu-btn.open span:nth-child(1) {
     transform: rotate(45deg) translate(5px, 5px);
+}
+
+.menu-btn.open {
+    color: var(--text-main);
 }
 
 .menu-btn.open span:nth-child(2) {
